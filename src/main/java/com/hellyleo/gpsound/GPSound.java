@@ -4,14 +4,18 @@
  */
 
 package com.hellyleo.gpsound;
+import javax.swing.*;
 
 /**
  *
- * @author Utente
+ * @author Leonardo Albani & Helene Korsten
  */
 public class GPSound {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        JFrame view = new JFrame("GPSound");
+        view.setSize(300,200);
+        view.setVisible(true);
+        
     }
 }
