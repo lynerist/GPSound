@@ -19,7 +19,7 @@ public class ProcessGpx implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            System.out.println(gpx.name);
+            System.out.println(gpx.getName());
         } catch(Exception ec){
             System.out.println(gpx);
             System.out.println("Manca il File");
