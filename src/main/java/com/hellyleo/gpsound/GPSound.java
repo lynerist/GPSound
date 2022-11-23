@@ -8,7 +8,11 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -19,7 +23,7 @@ public class GPSound {
     final private Gpx gpx;
 
     public GPSound() {
-        gpx = new Gpx("");
+        gpx = new Gpx();
         buildInterface();
     }
         
@@ -46,8 +50,14 @@ public class GPSound {
         view.add(nameFile);
         
         loadGpx.addActionListener((ActionEvent e) -> {
-            gpx.loadFile(view);
-            nameFile.setText(gpx.getName());
+            try {
+                if (gpx.loadFile(view)){   
+                    nameFile.setText(gpx.getName());
+                }
+            } catch (SAXException | IOException ex) {
+                System.err.println("Parse has failed");
+                Logger.getLogger(GPSound.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
         // --- Lower part ---
