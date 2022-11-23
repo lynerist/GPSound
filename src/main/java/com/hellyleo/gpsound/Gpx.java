@@ -82,7 +82,13 @@ public class Gpx {
             
             lat0    = ((Element)node0).getAttribute("lat");
             long0   = ((Element)node0).getAttribute("long");
-            Node alt0Node = node0.getAttributes().getNamedItem("alt");
+            
+                        
+            Node alt0Node = node0.getFirstChild();
+            while (alt0Node != null && !alt0Node.getNodeName().equals("ele")){
+                alt0Node = alt0Node.getNextSibling();
+            }
+            
             if (alt0Node != null){
                 alt0 = alt0Node.getTextContent();
             }else{
@@ -102,9 +108,20 @@ public class Gpx {
             Node currentNode = track.item(currentIndex);
             currentIndex++;
             
+            
+            
             int x = deltaLong(long0, ((Element)currentNode).getAttribute("long"));
             int y = deltaLat(lat0, ((Element)currentNode).getAttribute("lat"));
-            int z = deltaAlt(alt0, "");//currentNode.getAttributes().getNamedItem("alt").getTextContent());
+            int z = 0;
+           
+            //To extract the elevation if it exists
+            if (! alt0.equals("")){
+                Node eleNode = currentNode.getFirstChild();
+                while (! eleNode.getNodeName().equals("ele")){
+                    eleNode = eleNode.getNextSibling();
+                }
+                z = deltaAlt(alt0, eleNode.getTextContent());
+            }
             
             
             return new TrackPoint(x,y,z);
@@ -117,7 +134,7 @@ public class Gpx {
             return 0;
         }
         private int deltaAlt(String alt0, String alt1){
-            return 0;
+            return (int) (Float.valueOf(alt1)-Float.valueOf(alt0)) ;
         }
            
     }
