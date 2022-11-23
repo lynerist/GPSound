@@ -7,6 +7,7 @@ package com.hellyleo.gpsound;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.Math.toRadians;
 import java.util.Iterator;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -18,6 +19,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 
 /**
  *
@@ -81,7 +83,7 @@ public class Gpx {
             
             
             lat0    = ((Element)node0).getAttribute("lat");
-            long0   = ((Element)node0).getAttribute("long");
+            long0   = ((Element)node0).getAttribute("lon");
             
                         
             Node alt0Node = node0.getFirstChild();
@@ -110,7 +112,7 @@ public class Gpx {
             
             
             
-            int x = deltaLong(long0, ((Element)currentNode).getAttribute("long"));
+            int x = deltaLong(long0, ((Element)currentNode).getAttribute("lon"), lat0);
             int y = deltaLat(lat0, ((Element)currentNode).getAttribute("lat"));
             int z = 0;
            
@@ -127,11 +129,26 @@ public class Gpx {
             return new TrackPoint(x,y,z);
         }
         
-        private int deltaLat(String lat0, String lat1){
-            return 0;
+        private int haversine(String la0, String lo0, String la1, String lo1){
+            Double lat0 = Double.valueOf(la0);
+            Double lon0 = Double.valueOf(lo0);
+            Double lat1 = Double.valueOf(la1);
+            Double lon1 = Double.valueOf(lo1);
+            final int EarthRadius = 6371000;
+            Double latDistance = toRadians(lat1-lat0);
+            Double lonDistance = toRadians(lon1-lon0);
+            Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + 
+            Math.cos(toRadians(lat0)) * Math.cos(toRadians(lat1)) * 
+            Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+            Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return (int) (EarthRadius * c);
         }
-        private int deltaLong(String long0, String long1){
-            return 0;
+        
+        private int deltaLat(String lat0, String lat1){
+            return haversine(lat0, "0", lat1, "0");
+        }
+        private int deltaLong(String long0, String long1, String lat0){
+            return haversine(lat0, long0, lat0, long1);
         }
         private int deltaAlt(String alt0, String alt1){
             return (int) (Float.valueOf(alt1)-Float.valueOf(alt0)) ;
