@@ -2,7 +2,6 @@ package com.hellyleo.gpsound;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventListener;
 
 /**
  *
@@ -22,7 +21,7 @@ public class ProcessGpx implements ActionListener{
             System.out.println("Manca il File");
         } else {
             System.out.println(gpx.getName());
-            System.err.println(gpx.getRoot());
+            System.out.println(gpx.printNext());
         } 
     }
     

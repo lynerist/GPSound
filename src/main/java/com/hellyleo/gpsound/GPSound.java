@@ -50,10 +50,8 @@ public class GPSound {
         view.add(nameFile);
         
         loadGpx.addActionListener((ActionEvent e) -> {
-            try {
-                if (gpx.loadFile(view)){   
-                    nameFile.setText(gpx.getName());
-                }
+            try {                
+                nameFile.setText(gpx.loadFile(view)?gpx.getName():"");  
             } catch (SAXException | IOException ex) {
                 System.err.println("Parse has failed");
                 Logger.getLogger(GPSound.class.getName()).log(Level.SEVERE, null, ex);
