@@ -77,7 +77,10 @@ public class Track implements Iterator<TrackPoint>{
     }
 
     @Override
-    public TrackPoint next() {                    
+    public TrackPoint next() {
+        if (! hasNext()){
+            throw new ArrayIndexOutOfBoundsException("No More Points");
+        }
         Node currentNode = track.item(currentIndex);
         currentIndex++;
 

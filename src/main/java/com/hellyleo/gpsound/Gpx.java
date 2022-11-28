@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
 public class Gpx {
    
     private String name = "";
-    private Track track; //Track non serve se posso caricare il primo punto e poi fare getNextSibling()
+    private Track track; 
 
     private final static JFileChooser fc = new JFileChooser();
     private final static DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

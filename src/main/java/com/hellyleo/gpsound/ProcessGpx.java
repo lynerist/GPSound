@@ -10,9 +10,11 @@ import java.awt.event.ActionListener;
 public class ProcessGpx implements ActionListener{
 
     final private Gpx gpx;
+    private int startPitch;
     
     public ProcessGpx(Gpx gpx) {
         this.gpx = gpx;
+        this.startPitch = 440;
     }
     
     @Override
