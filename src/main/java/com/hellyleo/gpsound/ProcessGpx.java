@@ -9,21 +9,19 @@ import java.awt.event.ActionListener;
  */
 public class ProcessGpx implements ActionListener{
 
-    final private Gpx gpx;
-    private int startPitch;
+    final private Model model;
     
-    public ProcessGpx(Gpx gpx) {
-        this.gpx = gpx;
-        this.startPitch = 440;
+    public ProcessGpx(Model model) {
+        this.model = model;
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ( "".equals(gpx.getName())) {
+        if ( "".equals(model.getGpx().getName())) {
             System.out.println("Manca il File");
         } else {
-            System.out.println(gpx.getName());
-            System.out.println(gpx.printNext());
+            System.out.println(model.getGpx().getName());
+            System.out.println(model.getGpx().printNext());
         } 
     }
     
