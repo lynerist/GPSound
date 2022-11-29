@@ -5,8 +5,6 @@
 package com.hellyleo.gpsound;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.xml.sax.SAXException;
 
 /**
@@ -19,11 +17,11 @@ public class GPSound extends javax.swing.JFrame {
      * Creates new form GPSound
      */
     
-    private final Gpx gpx;
+    private final Model model;
     
     public GPSound() {
-        gpx = new Gpx();
         initComponents();
+        model = new Model();        
     }
 
     /**
@@ -36,23 +34,46 @@ public class GPSound extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        load = new javax.swing.JButton();
+        fileName = new javax.swing.JLabel();
+        process = new javax.swing.JButton();
+        startPitchSlider = new javax.swing.JSlider();
+        startPitchValue = new javax.swing.JTextField();
+        startPitch = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Load File");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        load.setText("Load File");
+        load.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                loadActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Process");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        process.setText("Process");
+        process.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                processActionPerformed(evt);
+            }
+        });
+
+        startPitchSlider.setMaximum(2000);
+        startPitchSlider.setMinimum(20);
+        startPitchSlider.setOrientation(javax.swing.JSlider.VERTICAL);
+        startPitchSlider.setPaintLabels(true);
+        startPitchSlider.setToolTipText("");
+        startPitchSlider.setValue(440);
+        startPitchSlider.setName(""); // NOI18N
+        startPitchSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                startPitchSliderStateChanged(evt);
+            }
+        });
+
+        startPitchValue.setText("440");
+        startPitchValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startPitchValueActionPerformed(evt);
             }
         });
 
@@ -60,29 +81,43 @@ public class GPSound extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(98, 98, 98))))
+                        .addComponent(load)
+                        .addGap(18, 18, 18)
+                        .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(process))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
+                .addComponent(startPitchSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(167, 167, 167))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(startPitchValue, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(125, 125, 125))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(49, 49, 49))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(load)
+                                .addGap(114, 114, 114)
+                                .addComponent(process))
+                            .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(startPitchSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(startPitchValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
+
+        startPitch.setText("Start Pitch");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,11 +127,17 @@ public class GPSound extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(startPitch)
+                .addGap(158, 158, 158))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addComponent(startPitch)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48))
         );
@@ -104,19 +145,36 @@ public class GPSound extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadActionPerformed
         try {                
-                jLabel1.setText(gpx.loadFile(this)?gpx.getName():"");  
+                fileName.setText(model.getGpx().loadFile(this)?model.getGpx().getName():"");  
             } catch (SAXException | IOException ex) {
-                System.err.println("Parse has failed");
-                
+                System.err.println("Parse has failed");                
             }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_loadActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ProcessGpx process = new ProcessGpx(gpx);
-        process.actionPerformed(evt);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void processActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processActionPerformed
+        ProcessGpx processGpx = new ProcessGpx(model);
+        processGpx.actionPerformed(evt);
+    }//GEN-LAST:event_processActionPerformed
+
+    private void updateStartPitch(int n){
+        model.setstartPitch(n);
+        startPitchSlider.setValue(n);
+        startPitchValue.setText(String.valueOf(model.getstartPitch()));
+    }
+    
+    private void startPitchSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startPitchSliderStateChanged
+       updateStartPitch(startPitchSlider.getValue());   
+    }//GEN-LAST:event_startPitchSliderStateChanged
+
+    private void startPitchValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPitchValueActionPerformed
+        try{
+            updateStartPitch(Integer.parseInt(startPitchValue.getText()));
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_startPitchValueActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,9 +212,12 @@ public class GPSound extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel fileName;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton load;
+    private javax.swing.JButton process;
+    private javax.swing.JLabel startPitch;
+    private javax.swing.JSlider startPitchSlider;
+    private javax.swing.JTextField startPitchValue;
     // End of variables declaration//GEN-END:variables
 }
