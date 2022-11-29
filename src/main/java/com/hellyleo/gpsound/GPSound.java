@@ -9,7 +9,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author Utente
+ * @author Leo Helly
  */
 public class GPSound extends javax.swing.JFrame {
 
@@ -160,7 +160,7 @@ public class GPSound extends javax.swing.JFrame {
 
     private void updateStartPitch(int n){
         model.setstartPitch(n);
-        startPitchSlider.setValue(n);
+        startPitchSlider.setValue(model.getstartPitch());
         startPitchValue.setText(String.valueOf(model.getstartPitch()));
     }
     
@@ -171,7 +171,7 @@ public class GPSound extends javax.swing.JFrame {
     private void startPitchValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPitchValueActionPerformed
         try{
             updateStartPitch(Integer.parseInt(startPitchValue.getText()));
-        }catch (Exception e){
+        }catch (NumberFormatException e){
             System.out.println(e);
         }
     }//GEN-LAST:event_startPitchValueActionPerformed
@@ -204,10 +204,8 @@ public class GPSound extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GPSound().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new GPSound().setVisible(true);
         });
     }
 
