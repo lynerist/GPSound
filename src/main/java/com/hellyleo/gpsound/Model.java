@@ -14,12 +14,16 @@ public class Model{
     private int startPitch;
     private double startStereo;
     private double startAmp;
+    private int songDuration;
+    private int sensibility;
 
     public Model() {
         gpx = new Gpx();
         startPitch = 440;
         startStereo = 0.5;
         startAmp = 1.0;
+        songDuration = 30;
+        sensibility = 1; // 0:Walk, 1:Hike, 2:Mountain Bike, 3:Racing Bike, 4:Vehicle  
     }
     
     public Gpx getGpx(){
@@ -47,5 +51,21 @@ public class Model{
     
     public double getStartAmp() {
         return startAmp;
+    }    
+
+    public void setSongDuration(int songDuration) {
+        this.songDuration = songDuration;
+    }
+    
+    public int getSongDuration() {
+        return songDuration;
+    }
+
+    public void setSensibility(int sensibility) {
+        this.sensibility = sensibility;
+    }
+    
+    public int getSensibility() {
+        return sensibility;
     }    
 }

@@ -33,6 +33,7 @@ public class GPSound extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        sensibilityGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         load = new javax.swing.JButton();
         fileName = new javax.swing.JLabel();
@@ -46,6 +47,14 @@ public class GPSound extends javax.swing.JFrame {
         startAmp = new javax.swing.JLabel();
         startAmpSlider = new javax.swing.JSlider();
         startAmpValue = new javax.swing.JTextField();
+        songDuration = new javax.swing.JLabel();
+        seconds = new javax.swing.JLabel();
+        songDurationValue = new javax.swing.JSpinner();
+        sensibility_0 = new javax.swing.JRadioButton();
+        sensibility_1 = new javax.swing.JRadioButton();
+        sensibility_2 = new javax.swing.JRadioButton();
+        sensibility_3 = new javax.swing.JRadioButton();
+        sensibility_4 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,25 +134,70 @@ public class GPSound extends javax.swing.JFrame {
             }
         });
 
+        songDuration.setText("Song Duration");
+
+        seconds.setText("s");
+
+        songDurationValue.setModel(new javax.swing.SpinnerNumberModel(30, 1, 1800, 1));
+        songDurationValue.setToolTipText("");
+        songDurationValue.setRequestFocusEnabled(false);
+        songDurationValue.setValue(30);
+        songDurationValue.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                songDurationValueStateChanged(evt);
+            }
+        });
+
+        sensibilityGroup.add(sensibility_0);
+        sensibility_0.setToolTipText("");
+        sensibility_0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sensibility_0ActionPerformed(evt);
+            }
+        });
+
+        sensibilityGroup.add(sensibility_1);
+        sensibility_1.setToolTipText("");
+        sensibility_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sensibility_1ActionPerformed(evt);
+            }
+        });
+
+        sensibilityGroup.add(sensibility_2);
+        sensibility_2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sensibility_2ActionPerformed(evt);
+            }
+        });
+
+        sensibilityGroup.add(sensibility_3);
+        sensibility_3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sensibility_3ActionPerformed(evt);
+            }
+        });
+
+        sensibilityGroup.add(sensibility_4);
+        sensibility_4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sensibility_4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(process)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(load)
-                        .addGap(18, 18, 18)
-                        .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(64, 543, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(379, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sensibility_3)
+                            .addComponent(sensibility_0)
+                            .addComponent(sensibility_1))
+                        .addGap(212, 212, 212)
                         .addComponent(startPitchSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(101, 101, 101)
                         .addComponent(startAmpSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -153,20 +207,46 @@ public class GPSound extends javax.swing.JFrame {
                         .addGap(141, 141, 141))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(startStereo)
-                        .addGap(113, 113, 113))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(startStereoSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(startPitch)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(startAmp))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(startPitchValue, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(45, 45, 45)
-                                    .addComponent(startAmpValue, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(56, 56, 56))))
+                        .addGap(113, 113, 113))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 536, Short.MAX_VALUE)
+                                .addComponent(startStereoSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(songDuration)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(startPitch)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(startAmp))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(startPitchValue, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(45, 45, 45)
+                                        .addComponent(startAmpValue, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(56, 56, 56))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(load)
+                                .addGap(18, 18, 18)
+                                .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(process))
+                        .addGap(143, 143, 143)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sensibility_2)
+                            .addComponent(sensibility_4))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(songDurationValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(seconds, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,11 +255,22 @@ public class GPSound extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(load)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(load)
-                                .addGap(114, 114, 114)
-                                .addComponent(process))
-                            .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22)
+                                .addComponent(sensibility_0)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sensibility_1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sensibility_3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sensibility_2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(process)
+                            .addComponent(sensibility_4))
+                        .addGap(55, 55, 55))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -191,12 +282,17 @@ public class GPSound extends javax.swing.JFrame {
                                 .addComponent(startPitchSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(startAmpSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(startAmpSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(startPitchValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startAmpValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52)
+                    .addComponent(startAmpValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(songDuration, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(seconds)
+                    .addComponent(songDurationValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
                 .addComponent(startStereo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(startStereoSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -211,13 +307,13 @@ public class GPSound extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -290,6 +386,36 @@ public class GPSound extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_startAmpValueActionPerformed
 
+    private void songDurationValueStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_songDurationValueStateChanged
+        updateSongDuration((int)songDurationValue.getValue());
+    }//GEN-LAST:event_songDurationValueStateChanged
+
+    private void sensibility_0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sensibility_0ActionPerformed
+        model.setSensibility(0);
+    }//GEN-LAST:event_sensibility_0ActionPerformed
+
+    private void sensibility_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sensibility_1ActionPerformed
+        model.setSensibility(1);
+    }//GEN-LAST:event_sensibility_1ActionPerformed
+
+    private void sensibility_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sensibility_3ActionPerformed
+        model.setSensibility(2);
+    }//GEN-LAST:event_sensibility_3ActionPerformed
+
+    private void sensibility_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sensibility_2ActionPerformed
+        model.setSensibility(3);
+    }//GEN-LAST:event_sensibility_2ActionPerformed
+
+    private void sensibility_4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sensibility_4ActionPerformed
+        model.setSensibility(4);
+    }//GEN-LAST:event_sensibility_4ActionPerformed
+
+    private void updateSongDuration(int n){
+        model.setSongDuration(n);
+        songDurationValue.setValue(n);
+        System.out.println(model.getSensibility());
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -328,6 +454,15 @@ public class GPSound extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton load;
     private javax.swing.JButton process;
+    private javax.swing.JLabel seconds;
+    private javax.swing.ButtonGroup sensibilityGroup;
+    private javax.swing.JRadioButton sensibility_0;
+    private javax.swing.JRadioButton sensibility_1;
+    private javax.swing.JRadioButton sensibility_2;
+    private javax.swing.JRadioButton sensibility_3;
+    private javax.swing.JRadioButton sensibility_4;
+    private javax.swing.JLabel songDuration;
+    private javax.swing.JSpinner songDurationValue;
     private javax.swing.JLabel startAmp;
     private javax.swing.JSlider startAmpSlider;
     private javax.swing.JTextField startAmpValue;
