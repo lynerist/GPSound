@@ -37,9 +37,12 @@ public class GPSound extends javax.swing.JFrame {
         load = new javax.swing.JButton();
         fileName = new javax.swing.JLabel();
         process = new javax.swing.JButton();
+        startPitch = new javax.swing.JLabel();
         startPitchSlider = new javax.swing.JSlider();
         startPitchValue = new javax.swing.JTextField();
-        startPitch = new javax.swing.JLabel();
+        startStereo = new javax.swing.JLabel();
+        startStereoSlider = new javax.swing.JSlider();
+        startStereoValue = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,6 +59,8 @@ public class GPSound extends javax.swing.JFrame {
                 processActionPerformed(evt);
             }
         });
+
+        startPitch.setText("Start Pitch");
 
         startPitchSlider.setMaximum(2000);
         startPitchSlider.setMinimum(20);
@@ -77,6 +82,24 @@ public class GPSound extends javax.swing.JFrame {
             }
         });
 
+        startStereo.setText("Start Stereophony");
+
+        startStereoSlider.setMaximum(50);
+        startStereoSlider.setMinimum(-50);
+        startStereoSlider.setValue(0);
+        startStereoSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                startStereoSliderStateChanged(evt);
+            }
+        });
+
+        startStereoValue.setText("0");
+        startStereoValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startStereoValueActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -85,17 +108,38 @@ public class GPSound extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(process)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(load)
                         .addGap(18, 18, 18)
-                        .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(process))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
-                .addComponent(startPitchSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(167, 167, 167))
+                        .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+                        .addComponent(startPitch)
+                        .addGap(191, 191, 191))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(startPitchValue, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(125, 125, 125))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(startPitchSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(207, 207, 207))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(startPitchValue, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(177, 177, 177))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(203, 203, 203)
+                        .addComponent(startStereo))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(238, 238, 238)
+                        .addComponent(startStereoValue, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(153, 153, 153)
+                    .addComponent(startStereoSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(357, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,35 +155,38 @@ public class GPSound extends javax.swing.JFrame {
                             .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(startPitch)
+                        .addGap(12, 12, 12)
                         .addComponent(startPitchSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(startPitchValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addComponent(startStereo)
+                .addGap(51, 51, 51)
+                .addComponent(startStereoValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(379, 379, 379)
+                    .addComponent(startStereoSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(59, Short.MAX_VALUE)))
         );
-
-        startPitch.setText("Start Pitch");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(startPitch)
-                .addGap(158, 158, 158))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
-                .addComponent(startPitch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -159,9 +206,9 @@ public class GPSound extends javax.swing.JFrame {
     }//GEN-LAST:event_processActionPerformed
 
     private void updateStartPitch(int n){
-        model.setstartPitch(n);
-        startPitchSlider.setValue(model.getstartPitch());
-        startPitchValue.setText(String.valueOf(model.getstartPitch()));
+        model.setStartPitch(n);
+        startPitchSlider.setValue(model.getStartPitch());
+        startPitchValue.setText(String.valueOf(model.getStartPitch()));
     }
     
     private void startPitchSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startPitchSliderStateChanged
@@ -175,6 +222,24 @@ public class GPSound extends javax.swing.JFrame {
             System.out.println(e);
         }
     }//GEN-LAST:event_startPitchValueActionPerformed
+
+    private void updateStartStereo(double n){
+        model.setStartStereo(n);
+        startStereoSlider.setValue((int)((model.getStartStereo()-0.5)*100 +0.5*(model.getStartStereo()<0.5?-1:1)));
+        startStereoValue.setText(String.valueOf((int)((model.getStartStereo()-0.5)*100 +0.5*(model.getStartStereo()<0.5?-1:1))));
+    }
+        
+    private void startStereoValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startStereoValueActionPerformed
+        try{
+            updateStartStereo((double)Integer.parseInt(startStereoValue.getText())/100+0.5);   
+        }catch (NumberFormatException e){
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_startStereoValueActionPerformed
+
+    private void startStereoSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startStereoSliderStateChanged
+        updateStartStereo((double)startStereoSlider.getValue()/100+0.5);   
+    }//GEN-LAST:event_startStereoSliderStateChanged
 
     /**
      * @param args the command line arguments
@@ -217,5 +282,8 @@ public class GPSound extends javax.swing.JFrame {
     private javax.swing.JLabel startPitch;
     private javax.swing.JSlider startPitchSlider;
     private javax.swing.JTextField startPitchValue;
+    private javax.swing.JLabel startStereo;
+    private javax.swing.JSlider startStereoSlider;
+    private javax.swing.JTextField startStereoValue;
     // End of variables declaration//GEN-END:variables
 }
