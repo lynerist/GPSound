@@ -70,8 +70,8 @@ public class Gpx {
         return returnVal == JFileChooser.APPROVE_OPTION;
     }   
     
-    public String printNext(){
-        return track.next().toString();
+    public TrackPoint getNext(){
+        return track.next();
     }
 }
 

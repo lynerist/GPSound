@@ -20,9 +20,15 @@ public class ProcessGpx implements ActionListener{
         if ( "".equals(model.getGpx().getName())) {
             System.out.println("Manca il File");
         } else {
-            System.out.println(model.getGpx().getName());
-            System.out.println(model.getGpx().printNext());
+            TrackPoint next = model.getGpx().getNext();
+            System.out.print(next+ " ");
+            System.out.println(deltaLongToStereo(model.getSensibility(), next.getX()));
         } 
     }
     
+    public float deltaLongToStereo(int sensibility, int delta){
+        float[] maxDeltas = {1000,4000,5000,10000,50000}; //Sensibility values
+        float maxDelta = maxDeltas[sensibility];
+        return (float)(delta/(maxDelta*2)+0.5);       
+    }
 }

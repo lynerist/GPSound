@@ -413,7 +413,6 @@ public class GPSound extends javax.swing.JFrame {
     private void updateSongDuration(int n){
         model.setSongDuration(n);
         songDurationValue.setValue(n);
-        System.out.println(model.getSensibility());
     }
     
     /**

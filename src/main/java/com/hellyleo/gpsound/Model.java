@@ -11,8 +11,8 @@ package com.hellyleo.gpsound;
  */
 public class Model{
     private final Gpx gpx;
-    private int startPitch;
-    private double startStereo;
+    private int startPitch; //20-20000
+    private double startStereo; //0-1
     private double startAmp;
     private int songDuration;
     private int sensibility;
