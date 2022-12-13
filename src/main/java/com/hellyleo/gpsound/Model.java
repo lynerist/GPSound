@@ -13,7 +13,7 @@ public class Model{
     private final Gpx gpx;
     private int startPitch; //20-20000
     private double startStereo; //0-1
-    private double startAmp;
+    private double startAmp; // 0.0 - 2.0
     private int songDuration;
     private int sensibility;
 
