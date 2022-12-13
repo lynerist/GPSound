@@ -96,8 +96,6 @@ public class Track implements Iterator<TrackPoint>{
             }
             z = deltaAlt(alt0, eleNode.getTextContent());
         }
-
-
         return new TrackPoint(x,y,z);
     }
 
@@ -109,11 +107,12 @@ public class Track implements Iterator<TrackPoint>{
         final int EarthRadius = 6371000;
         Double latDistance = toRadians(lat1-lat0);
         Double lonDistance = toRadians(lon1-lon0);
+               
         Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + 
         Math.cos(toRadians(lat0)) * Math.cos(toRadians(lat1)) * 
         Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return (int) (EarthRadius * c);
+        return (int) (EarthRadius * c) * (latDistance >= 0 && lonDistance >=0?1:-1);
     }
 
     private int deltaLat(String lat0, String lat1){
