@@ -20,14 +20,37 @@ public class ProcessGpx implements ActionListener{
         if ( "".equals(model.getGpx().getName())) {
             System.out.println("Manca il File");
         } else {
-            //for (int i = 0; i < 100; i++) {
-                TrackPoint next = model.getGpx().getNext();
-                System.out.print(next+ " ");
-                System.out.println(deltaLongToStereo(next.getX()));
-                System.out.println(deltaLatToPitch(next.getY()));
-                System.out.println(deltaAltToAmp(next.getZ()));
+            TrackPoint next = model.getGpx().getNext();
+            System.out.print(next+ " ");
+            System.out.println(deltaLongToStereo(next.getX()));
+            System.out.println(deltaLatToPitch(next.getY()));
+            System.out.println(deltaAltToAmp(next.getZ()));
+            try {
+                Player player = new Player(model.getGpx().getName());
 
-            //}
+                player.SetStereo(deltaLongToStereo(next.getX()));                
+                player.SetFrequency((int) deltaLatToPitch(next.getY()));
+                player.SetAmplitude(deltaAltToAmp(next.getZ()));
+
+              
+                player.synth.sleepFor(2);
+                
+                player.SetStereo(0.7f);                
+                player.synth.sleepFor(2);
+                
+                player.SetFrequency(700);
+                player.synth.sleepFor(2);
+                
+                player.SetAmplitude(0.5f);
+                player.synth.sleepFor(2);
+                
+                player.stop();
+                
+                
+            } catch (Exception err) {
+                System.out.println(err);
+            }
+            
         } 
     }
     
