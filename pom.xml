@@ -11,4 +11,18 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.hellyleo.gpsound.GPSound</exec.mainClass>
     </properties>
+    <repositories>
+        <repository>
+        <id>clojars.org</id>
+        <url>https://repo.clojars.org</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.jsyn/jsyn -->
+        <dependency>
+            <groupId>com.jsyn</groupId>
+            <artifactId>jsyn</artifactId>
+            <version>20170815</version>
+        </dependency>
+    </dependencies>
 </project>
