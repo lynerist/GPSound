@@ -20,33 +20,23 @@ public class ProcessGpx implements ActionListener{
         if ( "".equals(model.getGpx().getName())) {
             System.out.println("Manca il File");
         } else {
-            TrackPoint next = model.getGpx().getNext();
-            System.out.print(next+ " ");
-            System.out.println(deltaLongToStereo(next.getX()));
-            System.out.println(deltaLatToPitch(next.getY()));
-            System.out.println(deltaAltToAmp(next.getZ()));
             try {
                 Player player = new Player(model.getGpx().getName());
+                float counterTime = 0;
+                float timeQuantum = (float)model.getSongDuration()/(float)model.getNumPoints();
 
-                player.SetStereo(deltaLongToStereo(next.getX()));                
-                player.SetFrequency((int) deltaLatToPitch(next.getY()));
-                player.SetAmplitude(deltaAltToAmp(next.getZ()));
-
-              
-                player.synth.sleepFor(2);
-                
-                player.SetStereo(0.7f);                
-                player.synth.sleepFor(2);
-                
-                player.SetFrequency(700);
-                player.synth.sleepFor(2);
-                
-                player.SetAmplitude(0.5f);
-                player.synth.sleepFor(2);
+                for (TrackPoint point : model.getGpx().getTrack()) {
+                    player.SetStereo(deltaLongToStereo(point.getX()));                
+                    player.SetFrequency((int) deltaLatToPitch(point.getY()));
+                    player.SetAmplitude(deltaAltToAmp(point.getZ()));                    
+                    player.synth.sleepFor(timeQuantum);
+                    //System.out.println(player);
+                    System.out.println(counterTime);
+                    counterTime += timeQuantum;
+                }
                 
                 player.stop();
-                
-                
+                                
             } catch (Exception err) {
                 System.out.println(err);
             }
@@ -68,10 +58,10 @@ public class ProcessGpx implements ActionListener{
     }
     
     public float deltaLatToPitch(int delta){
-        float[] maxDeltas = {1000,4000,6000,10000,50000}; //Sensibility values
+        float[] maxDeltas = {2000,8000,12000,20000,100000}; //Sensibility values
         float maxDelta = maxDeltas[model.getSensibility()];
 
-        int numberOfOctaves = 6;
+        float numberOfOctaves = 4;
         float metersPerOctave = maxDelta/numberOfOctaves;
         
         // (delta/metersPerOctave) -> number of octave jumps from startpitch 
@@ -84,10 +74,7 @@ public class ProcessGpx implements ActionListener{
             pitch = (int) (baseFrequence + delta%metersPerOctave/metersPerOctave*baseFrequence);        
         }else{
             delta *= -1;
-            System.out.println("delta -> " + delta);
             int baseFrequence = model.getStartPitch()/(int)Math.pow(2, (int)(delta/metersPerOctave));
-            System.out.println("baseFrequence -> " + baseFrequence);
-
             pitch = baseFrequence>0?(int)(baseFrequence - delta%metersPerOctave/metersPerOctave*(baseFrequence/2)):20;
         }
         

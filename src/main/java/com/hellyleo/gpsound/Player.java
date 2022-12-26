@@ -17,6 +17,7 @@ public class Player {
     float amplitude;
     float amplitudeLeft;
     float amplitudeRight;
+    int frequency;
 
 
     public Synthesizer synth;
@@ -27,9 +28,8 @@ public class Player {
         amplitude = 1;
         amplitudeLeft = 0.5f;
         amplitudeRight = 0.5f;
-        
-        
-
+        int frequency = 440;
+                
         synth = JSyn.createSynthesizer();
         synth.add(oscLeft = new SawtoothOscillatorBL());
         synth.add(oscRight = new SawtoothOscillatorBL());
@@ -46,7 +46,7 @@ public class Player {
     public void SetFrequency(int frequency){
         oscLeft.frequency.set(frequency);
         oscRight.frequency.set(frequency);
-
+        this.frequency = frequency;
     }
     public void SetAmplitude(float amplitude){
         this.amplitude = amplitude;
@@ -63,5 +63,10 @@ public class Player {
         recorder.stop();
         recorder.close();
         synth.stop();
+    }
+    
+    @Override
+    public String toString(){
+        return "pitch: " + frequency + " stereo: " + amplitudeLeft + " amp: " + amplitude;
     }
 }

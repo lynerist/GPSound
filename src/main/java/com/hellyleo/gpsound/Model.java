@@ -68,4 +68,8 @@ public class Model{
     public int getSensibility() {
         return sensibility;
     }    
+    
+    public int getNumPoints(){
+        return gpx.getNumPoints();
+    }
 }

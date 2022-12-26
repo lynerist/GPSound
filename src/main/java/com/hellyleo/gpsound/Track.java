@@ -6,6 +6,7 @@ package com.hellyleo.gpsound;
 
 import static java.lang.Math.toRadians;
 import java.util.Iterator;
+import java.util.function.Consumer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -41,7 +42,7 @@ class TrackPoint{
     }
 }
 
-public class Track implements Iterator<TrackPoint>{
+public class Track implements Iterable<TrackPoint>, Iterator<TrackPoint>{
     private final NodeList track;
     private int currentIndex;
     private final String lat0;
@@ -125,5 +126,13 @@ public class Track implements Iterator<TrackPoint>{
         return (int) (Float.valueOf(alt1)-Float.valueOf(alt0)) ;
     }
 
+    @Override
+    public Iterator<TrackPoint> iterator() {
+        return this;
+    }
+
+    public int getNumPoints(){
+        return track.getLength();
+    }
 }
    
