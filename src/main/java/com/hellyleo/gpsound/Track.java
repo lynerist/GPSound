@@ -6,7 +6,6 @@ package com.hellyleo.gpsound;
 
 import static java.lang.Math.toRadians;
 import java.util.Iterator;
-import java.util.function.Consumer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,9 +14,9 @@ import org.w3c.dom.NodeList;
 class TrackPoint{
 
     public TrackPoint(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.x = x; //delta long
+        this.y = y; //delta lat
+        this.z = z; //alt
     }
 
     private final int x;
@@ -87,7 +86,7 @@ public class Track implements Iterable<TrackPoint>, Iterator<TrackPoint>{
 
         int x = deltaLong(long0, ((Element)currentNode).getAttribute("lon"), lat0);
         int y = deltaLat(lat0, ((Element)currentNode).getAttribute("lat"));
-        int z = 0;
+        int z = 440;
 
         //To extract the elevation if it exists
         if (! alt0.equals("")){
@@ -95,7 +94,8 @@ public class Track implements Iterable<TrackPoint>, Iterator<TrackPoint>{
             while (! eleNode.getNodeName().equals("ele")){
                 eleNode = eleNode.getNextSibling();
             }
-            z = deltaAlt(alt0, eleNode.getTextContent());
+            z = Float.valueOf(eleNode.getTextContent()).intValue();
+            z = z>8000?8000:(z<20?20:z);
         }
         return new TrackPoint(x,y,z);
     }
@@ -121,9 +121,6 @@ public class Track implements Iterable<TrackPoint>, Iterator<TrackPoint>{
     }
     private int deltaLong(String long0, String long1, String lat0){
         return haversine(lat0, long0, lat0, long1);
-    }
-    private int deltaAlt(String alt0, String alt1){
-        return (int) (Float.valueOf(alt1)-Float.valueOf(alt0)) ;
     }
 
     @Override

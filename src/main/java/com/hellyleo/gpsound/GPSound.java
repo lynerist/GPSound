@@ -352,20 +352,21 @@ public class GPSound extends javax.swing.JFrame {
 
     private void updateStartStereo(double n){
         model.setStartStereo(n);
-        startStereoSlider.setValue((int)((model.getStartStereo()-0.5)*100 +0.5*(model.getStartStereo()<0.5?-1:1)));
-        startStereoValue.setText(String.valueOf((int)((model.getStartStereo()-0.5)*100 +0.5*(model.getStartStereo()<0.5?-1:1))));
+        
+        startStereoSlider.setValue((int)(model.getStartStereo()*100));
+        startStereoValue.setText(String.valueOf((int)(model.getStartStereo()*100)));
     }
         
     private void startStereoValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startStereoValueActionPerformed
         try{
-            updateStartStereo((double)Integer.parseInt(startStereoValue.getText())/100+0.5);   
+            updateStartStereo((double)Integer.parseInt(startStereoValue.getText())/100);   
         }catch (NumberFormatException e){
             System.out.println(e);
         }
     }//GEN-LAST:event_startStereoValueActionPerformed
 
     private void startStereoSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startStereoSliderStateChanged
-        updateStartStereo((double)startStereoSlider.getValue()/100+0.5);   
+        updateStartStereo((double)startStereoSlider.getValue()/100);   
     }//GEN-LAST:event_startStereoSliderStateChanged
 
     private void updateStartAmp(double n){

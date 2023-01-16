@@ -12,7 +12,7 @@ package com.hellyleo.gpsound;
 public class Model{
     private final Gpx gpx;
     private int startPitch; //20-20000
-    private double startStereo; //0-1
+    private double startStereo; //-0.5 - 0.5
     private double startAmp; // 0.0 - 2.0
     private int songDuration;
     private int sensibility;
@@ -20,9 +20,9 @@ public class Model{
     public Model() {
         gpx = new Gpx();
         startPitch = 440;
-        startStereo = 0.5;
+        startStereo = 0;
         startAmp = 1.0;
-        songDuration = 30;
+        songDuration = 20;
         sensibility = 1; // 0:Walk, 1:Hike, 2:Mountain Bike, 3:Racing Bike, 4:Vehicle  
     }
     
