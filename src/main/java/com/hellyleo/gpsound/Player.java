@@ -1,18 +1,24 @@
 package com.hellyleo.gpsound;
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
+import com.jsyn.ports.UnitInputPort;
+import com.jsyn.unitgen.Delay;
 import com.jsyn.unitgen.FilterBandPass;
 import com.jsyn.unitgen.FilterHighShelf;
+import com.jsyn.unitgen.InterpolatingDelay;
 import com.jsyn.unitgen.PinkNoise;
 import com.jsyn.unitgen.RedNoise;
 import com.jsyn.unitgen.SquareOscillator;
 import com.jsyn.unitgen.SineOscillator;
+import com.jsyn.unitgen.UnitFilter;
 import com.jsyn.unitgen.UnitOscillator;
 import com.jsyn.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import java.util.Arrays;
+
 
 public class Player {
     public File outputFile;
@@ -31,6 +37,78 @@ public class Player {
 
 
     public Synthesizer synth;
+    
+    
+    private class MyInterpolatingDelay extends UnitFilter{
+        public UnitInputPort delay;
+        private float[] buffer;
+        private int cursor;
+        private int numFrames;
+
+        public MyInterpolatingDelay() {
+            addPort(delay = new UnitInputPort("Delay"));
+        }
+
+       
+        public void allocate(int numFrames) {
+            this.numFrames = numFrames;
+            // Allocate extra frame for guard point to speed up interpolation.
+            buffer = new float[numFrames + 1];
+        }
+
+
+        @Override
+        public void generate(int start, int limit) {
+            double[] inputs = input.getValues();
+            double[] outputs = output.getValues();
+            double[] delays = delay.getValues();
+
+            for (int i = start; i < limit; i++) {
+                // This should be at the beginning of the loop
+                // because the guard point should == buffer[0].
+                if (cursor >= numFrames) {
+                    // Write guard point! Must allocate one extra sample.
+                    buffer[numFrames] = (float) inputs[i];
+                    cursor = 0;
+                }
+
+                float x = (float) inputs[i];
+                buffer[cursor] = x;
+
+                /* Convert delay time to a clipped frame offset. */
+                double delayFrames = delays[i] * getFrameRate();
+
+                // Clip to zero delay.
+                if (delayFrames <= 0.0) {
+                    outputs[i] = buffer[cursor];
+                } else {
+                    // Clip to maximum delay.
+                    if (delayFrames >= numFrames) {
+                        delayFrames = numFrames - 1;
+                    }
+
+                    // Calculate fractional index into delay buffer.
+                    double readIndex = cursor - delayFrames;
+                    if (readIndex < 0.0) {
+                        readIndex += numFrames;
+                    }
+                    // setup for interpolation.
+                    // We know readIndex is > 0 so we do not need to call floor().
+                    int iReadIndex = (int) readIndex;
+                    double frac = readIndex - iReadIndex;
+
+                    // Get adjacent values relying on guard point to prevent overflow.
+                    double val0 = buffer[iReadIndex];
+                    double val1 = buffer[iReadIndex + 1];
+
+                    // Interpolate new value.
+                    outputs[i] = val0 + (frac * (val1 - val0));
+                }
+                cursor += 1;
+            }
+        }
+    }
+
 
     private class Channel{
         private UnitOscillator osc;
@@ -38,12 +116,19 @@ public class Player {
         private RedNoise red;
         private final UnitOscillator[] components;
         private boolean isRight;
-
+        private MyInterpolatingDelay latencer;
         
+        private boolean isDelayed;
+        private double actualStereo;
+                
         public Channel(Synthesizer synth, WaveRecorder recorder, boolean isRight){
             this.isRight = isRight;
             synth.add(osc = new SquareOscillator());
-            osc.output.connect(0, recorder.getInput(), isRight?1:0);
+            synth.add(latencer = new MyInterpolatingDelay());
+            
+            osc.output.connect(0, latencer.getInput(), 0);
+            latencer.output.connect(0, recorder.getInput(), isRight?1:0);
+            latencer.allocate(8);
             
             //synth.add(sineLeft = new SineOscillator());
             //synth.add(redLeft = new RedNoise());
@@ -58,11 +143,21 @@ public class Player {
         }
         
         public void SetStereo(double stereo){
-            //osc.amplitude.set(isRight?stereo:1-stereo);
-            if (stereo>0 && !isRight){
-                //Latency??????   
+            stereo-=0.5;
+            stereo*=0.5;
+            stereo+=0.5;
+            osc.amplitude.set(isRight?stereo:1-stereo);
+            if (stereo>0 && !isRight || stereo<0 && isRight){
+                if (abs(stereo-actualStereo) > 0.1){
+                    actualStereo = stereo;
+                    isDelayed = true;
+                    latencer.allocate(((int)((abs(actualStereo)/0.1)))*2000);    
+                }
+            }else if (isDelayed){
+                actualStereo = 0;
+                latencer.allocate(8);
+                isDelayed = false;
             }
-            //sineLeft.amplitude.set(1-stereo);
         }
     }
     
