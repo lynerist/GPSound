@@ -1,16 +1,11 @@
 package com.hellyleo.gpsound;
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
+import com.jsyn.data.Function;
 import com.jsyn.ports.UnitInputPort;
 import com.jsyn.unitgen.Delay;
 import com.jsyn.unitgen.FilterBandPass;
-import com.jsyn.unitgen.FilterBiquad;
-import com.jsyn.unitgen.FilterHighShelf;
 import com.jsyn.unitgen.FilterPeakingEQ;
-import com.jsyn.unitgen.InterpolatingDelay;
-import com.jsyn.unitgen.PinkNoise;
-import com.jsyn.unitgen.RedNoise;
-import com.jsyn.unitgen.SquareOscillator;
 import com.jsyn.unitgen.SineOscillator;
 import com.jsyn.unitgen.UnitFilter;
 import com.jsyn.unitgen.UnitOscillator;
@@ -25,12 +20,11 @@ import java.util.Arrays;
 public class Player {
     public File outputFile;
     private final WaveRecorder recorder;
-    private FilterPeakingEQ filter;
     
     private FilterBandPass filterNoise;
 
-    private Channel leftChannel;
-    private Channel rightChannel;
+    private final Channel leftChannel;
+    private final Channel rightChannel;
 
     
     double amplitudeLeft;
@@ -110,67 +104,93 @@ public class Player {
             }
         }
     }
-    
-    private class Channel{
-        private UnitOscillator osc;
         
-        private RedNoise red;
+    private class Channel{
+        private SineOscillator SineToSmoothTimbre(){
+            SineOscillator sine;
+            synth.add(sine = new SineOscillator());
+            sine.output.connect(0, microDelay.getInput(), 0);            
+            return sine;
+        }     
+        private class Harmonic{
+            double coeff, amp;
+            SineOscillator s;
+            public Harmonic(double n, double a){
+                this.amp = a;
+                this.coeff = n;
+                this.s = SineToSmoothTimbre();
+                s.amplitude.set(a);
+            }
+            public void setFrequency(double freq){
+                this.s.frequency.set(freq*coeff);
+            }
+            public void setStereo(double amp){
+                //System.out.println("a="+ this.amp*amp);
+                this.s.amplitude.set(this.amp*amp);
+                
+            }
+        }
+                        
+        private SineOscillator osc;
+        
         private final UnitOscillator[] components;
-        private boolean isRight;
-        private MyInterpolatingDelay squareMicroDelay;
+        private final Harmonic[] harmonics;
+        private final boolean isRight;
+        private final MyInterpolatingDelay microDelay;
         
         private boolean isDelayed;
         private double actualStereo;
         
-        private SineOscillator SineToSmoothTimbre(){
-            SineOscillator sine;
-            synth.add(sine = new SineOscillator());
-            sine.output.connect(0, squareMicroDelay.getInput(), 0);
-            return sine;
-        }
-                
-        public Channel(Synthesizer synth, WaveRecorder recorder,FilterBiquad filter, boolean isRight){
+        public Channel(Synthesizer synth, WaveRecorder recorder, boolean isRight){
             this.isRight = isRight;
-            synth.add(osc = new SquareOscillator());
-            synth.add(squareMicroDelay = new MyInterpolatingDelay());
             
-            osc.output.connect(0, squareMicroDelay.getInput(), 0);
-       
-            //synth.add(redLeft = new RedNoise());
-            //redLeft.amplitude.set(0.4);
-                  
-            squareMicroDelay.output.connect(0, filter.getInput(), 0);
+            synth.add(osc = new SineOscillator());            
+
+            synth.add(microDelay = new MyInterpolatingDelay());
             
+            osc.output.connect(0, microDelay.getInput(), 0);
+                         
+            microDelay.output.connect(0, recorder.getInput(), isRight?1:0);
             
-            filter.output.connect(0, recorder.getInput(), isRight?1:0);
+                        
+            microDelay.allocate(8);
             
-            squareMicroDelay.allocate(8);
-            
-            components = new UnitOscillator[]{osc, SineToSmoothTimbre(),SineToSmoothTimbre()};
+            components = new UnitOscillator[]{osc};
+            harmonics = new Harmonic[]{ /*new Harmonic(1.0/2.0, 0.4),
+                                        new Harmonic(1.0/4.0, 0.3),*/
+                                        new Harmonic(1.0/6.0, 0.1),
+                                        //new Harmonic(3, 0.1),
+                                        //new Harmonic(5, 0.3),
+                                        new Harmonic(7, 0.2)
+                                        };
         }
         
         public void SetFrequency(int frequency){
             Arrays.stream(this.components).forEach((x)->x.frequency.set(frequency));
-            //filterNoise.frequency.set(frequency);
+            Arrays.stream(this.harmonics).forEach((x)->x.setFrequency(frequency/2));
         }
         
         public void SetStereo(double stereo){
-            //diminuire lo spostamento? no direi di no
+            //diminuire il pan? no direi di no
             /*stereo-=0.5;
             stereo*=0.5;
             stereo+=0.5;*/
             osc.amplitude.set(isRight?stereo:1-stereo);
+            
+            //micro delay
             if (stereo>0 && !isRight || stereo<0 && isRight){
                 if (abs(stereo-actualStereo) > 0.1){
                     actualStereo = stereo;
                     isDelayed = true;
-                    squareMicroDelay.allocate(((int)((abs(actualStereo)/0.1)))*2000);    
+                    microDelay.allocate(((int)((abs(actualStereo)/0.1)))*2000);    
                 }
             }else if (isDelayed){
                 actualStereo = 0;
-                squareMicroDelay.allocate(8);
+                microDelay.allocate(8);
                 isDelayed = false;
             }
+            
+            Arrays.stream(this.harmonics).forEach((x)->x.setStereo(isRight?stereo:1-stereo));
         }
     }
     
@@ -184,21 +204,10 @@ public class Player {
         synth = JSyn.createSynthesizer();
         recorder = new WaveRecorder(synth, outputFile); 
         
-        synth.add(filter = new FilterPeakingEQ());
-        filter.amplitude.set(amplitude);
-        filter.gain.set(0.001);
-        
-        leftChannel = new Channel(synth, recorder, filter, false);
-        rightChannel= new Channel(synth, recorder, filter, true);
-        
-        
-        /*PinkNoise pink = new PinkNoise();
-        filterNoise = new FilterBandPass();
-        pink.output.connect(filterNoise.getInput());
-        filterNoise.amplitude.set(0.75);
-        synth.add(filterNoise);
-        filterNoise.output.connect(recorder.getInput());*/
-        
+     
+        leftChannel = new Channel(synth, recorder, false);
+        rightChannel= new Channel(synth, recorder, true);
+               
                
         synth.start();
         recorder.start();
@@ -208,7 +217,7 @@ public class Player {
     public void SetFrequency(int frequency){
         leftChannel.SetFrequency(frequency);
         rightChannel.SetFrequency(frequency);
-        filter.frequency.set(frequency);
+        //filter.frequency.set(frequency);
 
         //filterNoise.frequency.set(frequency);
         this.frequency = frequency;
