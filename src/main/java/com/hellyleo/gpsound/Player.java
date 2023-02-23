@@ -1,11 +1,8 @@
 package com.hellyleo.gpsound;
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
-import com.jsyn.data.Function;
 import com.jsyn.ports.UnitInputPort;
-import com.jsyn.unitgen.Delay;
 import com.jsyn.unitgen.FilterBandPass;
-import com.jsyn.unitgen.FilterPeakingEQ;
 import com.jsyn.unitgen.SineOscillator;
 import com.jsyn.unitgen.UnitFilter;
 import com.jsyn.unitgen.UnitOscillator;
@@ -156,18 +153,18 @@ public class Player {
             microDelay.allocate(8);
             
             components = new UnitOscillator[]{osc};
-            harmonics = new Harmonic[]{ /*new Harmonic(1.0/2.0, 0.4),
-                                        new Harmonic(1.0/4.0, 0.3),*/
+            harmonics = new Harmonic[]{ new Harmonic(1.0/2.0, 0.4),
+                                        new Harmonic(1.0/4.0, 0.3),
                                         new Harmonic(1.0/6.0, 0.1),
-                                        //new Harmonic(3, 0.1),
-                                        //new Harmonic(5, 0.3),
+                                        new Harmonic(3, 0.1),
+                                        new Harmonic(5, 0.3),
                                         new Harmonic(7, 0.2)
                                         };
         }
         
         public void SetFrequency(int frequency){
             Arrays.stream(this.components).forEach((x)->x.frequency.set(frequency));
-            Arrays.stream(this.harmonics).forEach((x)->x.setFrequency(frequency/2));
+            Arrays.stream(this.harmonics).forEach((x)->x.setFrequency(frequency));
         }
         
         public void SetStereo(double stereo){
@@ -176,6 +173,7 @@ public class Player {
             stereo*=0.5;
             stereo+=0.5;*/
             osc.amplitude.set(isRight?stereo:1-stereo);
+            System.out.println(isRight?stereo:1-stereo);
             
             //micro delay
             if (stereo>0 && !isRight || stereo<0 && isRight){
