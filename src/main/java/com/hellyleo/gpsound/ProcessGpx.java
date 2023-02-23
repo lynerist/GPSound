@@ -29,6 +29,7 @@ public class ProcessGpx implements ActionListener{
                 
                 double startStereo = (double)model.getStartStereo();
                 Instant start = Instant.now();
+                int count = 0;
                 for (TrackPoint point : model.getGpx().getTrack()) {
                     double actualStereo = startStereo + deltaLongToStereo(point.getX());
                     player.SetStereo(actualStereo>1?1:(actualStereo<0?0:actualStereo));                
@@ -40,7 +41,10 @@ public class ProcessGpx implements ActionListener{
                         player.synth.sleepFor(timeQuantum);                    
                     }
                     
-                    System.out.println(counterTime);
+                    if ((int)(counterTime)>count){
+                        System.out.println(counterTime);
+                        count++;
+                    }
                     counterTime += timeQuantum;
                 }
                 player.stop();
@@ -56,7 +60,7 @@ public class ProcessGpx implements ActionListener{
         float[] maxDeltas = {1000,4000,6000,10000,50000}; //Sensibility values
         float maxDelta = maxDeltas[model.getSensibility()];
         float stereo = (float)(delta/(maxDelta*2)+0.5);      
-        return stereo>1?1:(stereo<0?0:stereo);
+        return stereo>0.99f?0.99f:(stereo<0.1f?0.1f:stereo);
     }
     
     public float deltaLatToPitch(int delta){

@@ -138,10 +138,10 @@ public class GPSound extends javax.swing.JFrame {
 
         seconds.setText("s");
 
-        songDurationValue.setModel(new javax.swing.SpinnerNumberModel(30, 1, 1800, 1));
+        songDurationValue.setModel(new javax.swing.SpinnerNumberModel(20, 1, 1800, 1));
         songDurationValue.setToolTipText("");
         songDurationValue.setRequestFocusEnabled(false);
-        songDurationValue.setValue(30);
+        songDurationValue.setValue(20);
         songDurationValue.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 songDurationValueStateChanged(evt);
