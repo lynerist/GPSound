@@ -153,12 +153,15 @@ public class Player {
             microDelay.allocate(8);
             
             components = new UnitOscillator[]{osc};
-            harmonics = new Harmonic[]{ new Harmonic(1.0/2.0, 0.4),
-                                        new Harmonic(1.0/4.0, 0.3),
-                                        new Harmonic(1.0/6.0, 0.1),
-                                        new Harmonic(3, 0.1),
-                                        new Harmonic(5, 0.3),
-                                        new Harmonic(7, 0.2)
+            harmonics = new Harmonic[]{ new Harmonic(0.5, 0.4),
+                                        new Harmonic(0.25, 0.3),
+                                        new Harmonic(2, 0.38),
+                                        new Harmonic(3, 0.75),
+                                        new Harmonic(4, 0.38),
+                                        new Harmonic(5, 0.155),
+                                        new Harmonic(6, 0.18),
+                                        new Harmonic(7, 0.205),
+                                        new Harmonic(9, 0.09)
                                         };
         }
         
@@ -173,7 +176,7 @@ public class Player {
             stereo*=0.5;
             stereo+=0.5;*/
             osc.amplitude.set(isRight?stereo:1-stereo);
-            System.out.println(isRight?stereo:1-stereo);
+            //System.out.println(isRight?stereo:1-stereo);
             
             //micro delay
             if (stereo>0 && !isRight || stereo<0 && isRight){
