@@ -157,6 +157,7 @@ public class GPSound extends javax.swing.JFrame {
         });
 
         sensibilityGroup.add(sensibility_1);
+        sensibility_1.setSelected(true);
         sensibility_1.setToolTipText("");
         sensibility_1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
