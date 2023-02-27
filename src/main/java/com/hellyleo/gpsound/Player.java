@@ -2,7 +2,7 @@ package com.hellyleo.gpsound;
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
 import com.jsyn.ports.UnitInputPort;
-import com.jsyn.unitgen.FilterBandPass;
+import com.jsyn.unitgen.FilterLowPass;
 import com.jsyn.unitgen.SineOscillator;
 import com.jsyn.unitgen.UnitFilter;
 import com.jsyn.unitgen.UnitOscillator;
@@ -17,9 +17,7 @@ import java.util.Arrays;
 public class Player {
     public File outputFile;
     private final WaveRecorder recorder;
-    
-    private FilterBandPass filterNoise;
-
+   
     private final Channel leftChannel;
     private final Channel rightChannel;
 
@@ -30,8 +28,7 @@ public class Player {
 
 
     public Synthesizer synth;
-    
-    
+  
     private class MyInterpolatingDelay extends UnitFilter{
         public UnitInputPort delay;
         private float[] buffer;
@@ -124,7 +121,6 @@ public class Player {
             public void setStereo(double amp){
                 //System.out.println("a="+ this.amp*amp);
                 this.s.amplitude.set(this.amp*amp);
-                
             }
         }
                         
@@ -134,6 +130,7 @@ public class Player {
         private final Harmonic[] harmonics;
         private final boolean isRight;
         private final MyInterpolatingDelay microDelay;
+        private final FilterLowPass filter;
         
         private boolean isDelayed;
         private double actualStereo;
@@ -146,11 +143,17 @@ public class Player {
             synth.add(microDelay = new MyInterpolatingDelay());
             
             osc.output.connect(0, microDelay.getInput(), 0);
-                         
-            microDelay.output.connect(0, recorder.getInput(), isRight?1:0);
             
-                        
+            synth.add(filter = new FilterLowPass());
+            filter.output.connect(0, recorder.getInput(), isRight?1:0);
+            filter.Q.set(1);
+            filter.frequency.set(6000);
+            
+            microDelay.output.connect(0, filter.getInput(), 0);
+                                    
             microDelay.allocate(8);
+         
+            
             
             components = new UnitOscillator[]{osc};
             harmonics = new Harmonic[]{ new Harmonic(0.5, 0.4),
@@ -171,10 +174,6 @@ public class Player {
         }
         
         public void SetStereo(double stereo){
-            //diminuire il pan? no direi di no
-            /*stereo-=0.5;
-            stereo*=0.5;
-            stereo+=0.5;*/
             osc.amplitude.set(isRight?stereo:1-stereo);
             //System.out.println(isRight?stereo:1-stereo);
             
@@ -192,6 +191,14 @@ public class Player {
             }
             
             Arrays.stream(this.harmonics).forEach((x)->x.setStereo(isRight?stereo:1-stereo));
+        }
+        
+        public void SetCutoffFrequency(double cutOff){
+            filter.frequency.set(cutOff);
+        }
+
+        public void SetQBehind(boolean b){
+            filter.Q.set(b?0.2:1);
         }
     }
     
@@ -227,6 +234,16 @@ public class Player {
     public void SetStereo(double stereo){
         leftChannel.SetStereo(stereo);
         rightChannel.SetStereo(stereo);
+    }
+    
+    public void SetQBehind(boolean b) {
+        leftChannel.SetQBehind(b);
+        rightChannel.SetQBehind(b);
+    }
+    
+    public void SetCutoffFrequency(double cutoffFrequency){
+        leftChannel.SetCutoffFrequency(cutoffFrequency);
+        rightChannel.SetCutoffFrequency(cutoffFrequency);
     }
     
     public void stop() throws IOException{

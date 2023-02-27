@@ -30,10 +30,21 @@ public class ProcessGpx implements ActionListener{
                 double startStereo = (double)model.getStartStereo();
                 Instant start = Instant.now();
                 int count = 0;
+                boolean isBehind = false;
                 for (TrackPoint point : model.getGpx().getTrack()) {
                     double actualStereo = startStereo + deltaLongToStereo(point.getX());
                     player.SetStereo(actualStereo>1?1:(actualStereo<0?0:actualStereo));                
                     player.SetFrequency(point.getZ());
+
+                    double actualBackCutFreq = deltaLatToCutoffFrequency(point.getY());                    
+                    if (actualBackCutFreq > 0){
+                        player.SetCutoffFrequency(actualBackCutFreq);
+                    }
+                    
+                    if (!isBehind && actualBackCutFreq < 0 || isBehind && actualBackCutFreq >= 0){
+                       isBehind = !isBehind;
+                       player.SetQBehind(isBehind);
+                    }
                     
                     Instant finish = Instant.now();
                     
@@ -63,27 +74,15 @@ public class ProcessGpx implements ActionListener{
         return stereo>0.99f?0.99f:(stereo<0.1f?0.1f:stereo);
     }
     
-    public float deltaLatToPitch(int delta){
-        float[] maxDeltas = {2000,8000,12000,20000,100000}; //Sensibility values
+    public float deltaLatToCutoffFrequency(int delta){
+        if (delta > 0) return 0;
+        
+        float[] maxDeltas = {-1000,-4000,-6000,-10000,-50000}; //Sensibility values
         float maxDelta = maxDeltas[model.getSensibility()];
 
-        float numberOfOctaves = 3;
-        float metersPerOctave = maxDelta/numberOfOctaves;
+        float minCutOffFreq = 100;
+        float maxCutOffFreq = 6000;
         
-        // (delta/metersPerOctave) -> number of octave jumps from startpitch 
-        // (delta%metersPerOctave) reminder of the delta after the octave jumps
-        //delta%metersPerOctave/baseFrequence percentage of octave to add 
-        int pitch = 0;
-        if (delta>=0){
-            
-            int baseFrequence = model.getStartPitch()*(int)Math.pow(2, (int)(delta/metersPerOctave));
-            pitch = (int) (baseFrequence + delta%metersPerOctave/metersPerOctave*baseFrequence);        
-        }else{
-            delta *= -1;
-            int baseFrequence = model.getStartPitch()/(int)Math.pow(2, (int)(delta/metersPerOctave));
-            pitch = baseFrequence>0?(int)(baseFrequence - delta%metersPerOctave/metersPerOctave*(baseFrequence/2)):20;
-        }
-        
-        return pitch>20000?20000:(pitch<20?20:pitch);       
+        return maxCutOffFreq - (maxCutOffFreq-minCutOffFreq)*(delta/maxDelta<1?delta/maxDelta:1);            
     }
 }
