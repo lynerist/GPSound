@@ -129,8 +129,6 @@ public class GPSound extends javax.swing.JFrame {
 
         sensibilityGroup.add(sensibility_0);
         sensibility_0.setToolTipText("");
-        sensibility_0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/walk.png"))); // NOI18N
-        sensibility_0.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/walkS.png"))); // NOI18N
         sensibility_0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sensibility_0ActionPerformed(evt);
@@ -140,8 +138,6 @@ public class GPSound extends javax.swing.JFrame {
         sensibilityGroup.add(sensibility_1);
         sensibility_1.setSelected(true);
         sensibility_1.setToolTipText("");
-        sensibility_1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/hike.png"))); // NOI18N
-        sensibility_1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/hikeS.png"))); // NOI18N
         sensibility_1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sensibility_1ActionPerformed(evt);
@@ -149,8 +145,6 @@ public class GPSound extends javax.swing.JFrame {
         });
 
         sensibilityGroup.add(sensibility_2);
-        sensibility_2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/Mbike.png"))); // NOI18N
-        sensibility_2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/MbikeS.png"))); // NOI18N
         sensibility_2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sensibility_2ActionPerformed(evt);
@@ -158,8 +152,6 @@ public class GPSound extends javax.swing.JFrame {
         });
 
         sensibilityGroup.add(sensibility_3);
-        sensibility_3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/bike.png"))); // NOI18N
-        sensibility_3.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/bikeS.png"))); // NOI18N
         sensibility_3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sensibility_3ActionPerformed(evt);
@@ -167,15 +159,12 @@ public class GPSound extends javax.swing.JFrame {
         });
 
         sensibilityGroup.add(sensibility_4);
-        sensibility_4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/vehicle.png"))); // NOI18N
-        sensibility_4.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/vehicleS.png"))); // NOI18N
         sensibility_4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sensibility_4ActionPerformed(evt);
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/hellyleo/gpsound/icons/location.png"))); // NOI18N
         jLabel1.setText("GPSound");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -376,11 +365,6 @@ public class GPSound extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loadActionPerformed
 
-    private void updateStartPitch(int n){
-        model.setStartPitch(n);
-        startPitchSlider.setValue(model.getStartPitch());
-        startPitchValue.setText(String.valueOf(model.getStartPitch()));
-    }
     
     private void updateStartStereo(double n){
         model.setStartStereo(n);
