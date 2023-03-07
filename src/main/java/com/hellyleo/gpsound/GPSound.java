@@ -6,6 +6,8 @@ package com.hellyleo.gpsound;
 
 import java.io.IOException;
 import org.xml.sax.SAXException;
+import java.io.File;
+import java.nio.file.Files;
 
 /**
  *
@@ -165,6 +167,8 @@ public class GPSound extends javax.swing.JFrame {
             }
         });
 
+        String img = System.getProperty("user.dir") + "/src/main/java/com/hellyleo/gpsound/icons/location.png";
+        jLabel1.setIcon(new javax.swing.ImageIcon(img));
         jLabel1.setText("GPSound");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
