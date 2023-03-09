@@ -145,7 +145,6 @@ public class GPSound extends javax.swing.JFrame {
         sensibility_1.setSelected(true);
         sensibility_1.setText("hike");
         sensibility_1.setToolTipText("");
-        path = System.getProperty("user.dir") + "/src/main/java/com/hellyleo/gpsound/icons/";
         sensibility_1.setIcon(new javax.swing.ImageIcon(path + "hike.png"));
         sensibility_1.setSelectedIcon(new javax.swing.ImageIcon(path + "hikeS.png"));
         sensibility_1.addActionListener(new java.awt.event.ActionListener() {
@@ -155,7 +154,6 @@ public class GPSound extends javax.swing.JFrame {
         });
 
         sensibilityGroup.add(sensibility_2);
-        path = System.getProperty("user.dir") + "/src/main/java/com/hellyleo/gpsound/icons/";
         sensibility_2.setText("m. bike");
         sensibility_2.setIcon(new javax.swing.ImageIcon(path + "bike.png"));
         sensibility_2.setSelectedIcon(new javax.swing.ImageIcon(path + "bikeS.png"));
@@ -166,7 +164,6 @@ public class GPSound extends javax.swing.JFrame {
         });
 
         sensibilityGroup.add(sensibility_3);
-        path = System.getProperty("user.dir") + "/src/main/java/com/hellyleo/gpsound/icons/";
         sensibility_3.setText("bike");
         sensibility_3.setIcon(new javax.swing.ImageIcon(path + "Mbike.png"));
         sensibility_3.setSelectedIcon(new javax.swing.ImageIcon(path + "MbikeS.png"));
@@ -177,7 +174,6 @@ public class GPSound extends javax.swing.JFrame {
         });
 
         sensibilityGroup.add(sensibility_4);
-        path = System.getProperty("user.dir") + "/src/main/java/com/hellyleo/gpsound/icons/";
         sensibility_4.setText("vehicle");
         sensibility_4.setIcon(new javax.swing.ImageIcon(path + "vehicle.png"));
         sensibility_4.setSelectedIcon(new javax.swing.ImageIcon(path + "vehicleS.png"));

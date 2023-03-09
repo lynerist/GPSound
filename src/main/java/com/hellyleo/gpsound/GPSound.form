@@ -313,7 +313,7 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="hike"/>
-            <Property name="toolTipText" type="java.lang.String" value="" postCode="path = System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/java/com/hellyleo/gpsound/icons/&quot;;"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new javax.swing.ImageIcon(path + &quot;hike.png&quot;)" type="code"/>
             </Property>
@@ -327,7 +327,7 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="sensibility_2">
           <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor" postCode="path = System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/java/com/hellyleo/gpsound/icons/&quot;;">
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="sensibilityGroup"/>
             </Property>
             <Property name="text" type="java.lang.String" value="m. bike"/>
@@ -344,7 +344,7 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="sensibility_3">
           <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor" postCode="path = System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/java/com/hellyleo/gpsound/icons/&quot;;">
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="sensibilityGroup"/>
             </Property>
             <Property name="text" type="java.lang.String" value="bike"/>
@@ -361,7 +361,7 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="sensibility_4">
           <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor" postCode="path = System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/java/com/hellyleo/gpsound/icons/&quot;;">
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="sensibilityGroup"/>
             </Property>
             <Property name="text" type="java.lang.String" value="vehicle"/>
