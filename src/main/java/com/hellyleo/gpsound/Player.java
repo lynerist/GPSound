@@ -20,10 +20,7 @@ public class Player {
    
     private final Channel leftChannel;
     private final Channel rightChannel;
-
     
-    double amplitudeLeft;
-    double amplitudeRight;
     int frequency;
 
 
@@ -175,7 +172,6 @@ public class Player {
         
         public void SetStereo(double stereo){
             osc.amplitude.set(isRight?stereo:1-stereo);
-            //System.out.println(isRight?stereo:1-stereo);
             
             //micro delay
             if (stereo>0 && !isRight || stereo<0 && isRight){
@@ -205,8 +201,6 @@ public class Player {
     public Player(String fileName,double amplitude) throws FileNotFoundException{
         System.out.println(fileName);
         outputFile = new File(fileName.split("\\.")[0] + ".wav");
-        amplitudeLeft = 0.5f;
-        amplitudeRight = 0.5f;        
         frequency = 440;
                 
         synth = JSyn.createSynthesizer();
@@ -225,9 +219,7 @@ public class Player {
     public void SetFrequency(int frequency){
         leftChannel.SetFrequency(frequency);
         rightChannel.SetFrequency(frequency);
-        //filter.frequency.set(frequency);
 
-        //filterNoise.frequency.set(frequency);
         this.frequency = frequency;
     }
     
@@ -254,6 +246,6 @@ public class Player {
     
     @Override
     public String toString(){
-        return "pitch: " + frequency + " stereo: " + amplitudeLeft ;
+        return "pitch: " + frequency;
     }
 }

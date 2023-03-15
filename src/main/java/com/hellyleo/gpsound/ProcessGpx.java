@@ -53,17 +53,19 @@ public class ProcessGpx implements ActionListener{
                     }
                     
                     if ((int)(counterTime)>count){
-                        System.out.println(counterTime);
+                        System.out.println((int)(counterTime*100/model.getSongDuration()));
                         count++;
+                        model.advanceProgressBar((int)(counterTime*100/model.getSongDuration()));
                     }
                     counterTime += timeQuantum;
                 }
+                model.advanceProgressBar(100);
                 player.stop();
+                model.enableInput();
                                 
             } catch (Exception err) {
                 System.out.println(err);
             }
-            
         } 
     }
     

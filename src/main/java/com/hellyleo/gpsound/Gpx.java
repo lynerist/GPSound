@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.hellyleo.gpsound;
 
 import java.awt.Component;
@@ -15,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 public class Gpx {
-   
     private String name = "";
     private Track track; 
 
@@ -38,7 +33,6 @@ public class Gpx {
         fc.setAcceptAllFileFilterUsed(false);
         
         // --- File Parser ---
-        
         try {
             dbf.setIgnoringElementContentWhitespace(true);
             db = dbf.newDocumentBuilder();
@@ -56,15 +50,12 @@ public class Gpx {
     }
     
     public boolean loadFile(Component view) throws SAXException, IOException{
-     
         int returnVal = fc.showDialog(view, "Load GPX");
         
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            setName(file.getName());
-           
+            setName(file.getName());           
             track = new Track(db.parse(file));           
-            
         }
 
         return returnVal == JFileChooser.APPROVE_OPTION;

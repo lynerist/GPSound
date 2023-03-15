@@ -1,25 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.hellyleo.gpsound;
 
+import java.util.Arrays;
+import javax.swing.JComponent;
+import javax.swing.JProgressBar;
 
-/**
- *
- * @author Utente
- */
 public class Model{
     private final Gpx gpx;
-    private int startPitch; //20-20000
     private double startStereo; //-0.5 - 0.5
     private double startAmp; // 0.0 - 2.0
     private int songDuration;
     private int sensibility;
+    private final JProgressBar progressBar;
+    private final JComponent[] variInput;
 
-    public Model() {
+    public Model(JProgressBar progress, JComponent[] ui) {
+        progressBar = progress;
+        variInput = ui;
+        progress.setStringPainted(true);
         gpx = new Gpx();
-        startPitch = 440;
         startStereo = 0;
         startAmp = 1.0;
         songDuration = 20;
@@ -30,13 +28,6 @@ public class Model{
         return gpx;
     }
     
-    public void setStartPitch(int n){
-        startPitch = n;
-    }
-    public int getStartPitch(){
-        return startPitch;
-    }
-
     public void setStartStereo(double startStereo) {
         this.startStereo = startStereo;
     }
@@ -71,5 +62,17 @@ public class Model{
     
     public int getNumPoints(){
         return gpx.getNumPoints();
+    }
+    
+    public void advanceProgressBar(int progress){
+        progressBar.setValue(progress);
+    }
+    
+    public void disableInput(){
+         Arrays.stream(this.variInput).forEach((x)->x.setEnabled(false));
+    }
+    
+    public void enableInput(){
+         Arrays.stream(this.variInput).forEach((x)->x.setEnabled(true));
     }
 }
