@@ -24,6 +24,7 @@ public class GPSound extends javax.swing.JFrame {
         initComponents();
         model = new Model(jProgressBar1, 
                 new JComponent[]{startStereoSlider, startAmpSlider, songDurationValue, startAmpValue, startStereoValue});        
+        process.setEnabled(false);
     }
 
     /**
@@ -371,8 +372,9 @@ public class GPSound extends javax.swing.JFrame {
     }//GEN-LAST:event_startStereoSliderStateChanged
 
     private void processActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processActionPerformed
-        ProcessGpx processGpx = new ProcessGpx(model);
+        ProcessorGpxToWav processGpx = new ProcessorGpxToWav(model);
         model.disableInput();
+        process.setEnabled(false);
         Thread newThread = new Thread(() -> {
             processGpx.actionPerformed(evt);});
     newThread.start();
@@ -382,6 +384,7 @@ public class GPSound extends javax.swing.JFrame {
         try {
             fileName.setText(model.getGpx().loadFile(this)?model.getGpx().getName():"");
             model.advanceProgressBar(0);
+            process.setEnabled(!"".equals(fileName.getText()));
         } catch (SAXException | IOException ex) {
             System.err.println("Parse has failed");
         }

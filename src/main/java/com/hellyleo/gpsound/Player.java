@@ -22,6 +22,7 @@ public class Player {
     private final Channel rightChannel;
     
     int frequency;
+    double amplitude;
 
 
     public Synthesizer synth;
@@ -100,9 +101,10 @@ public class Player {
         private SineOscillator SineToSmoothTimbre(){
             SineOscillator sine;
             synth.add(sine = new SineOscillator());
-            sine.output.connect(0, microDelay.getInput(), 0);            
+            sine.output.connect(0, microDelay.getInput(), 0);
             return sine;
-        }     
+        }
+        
         private class Harmonic{
             double coeff, amp;
             SineOscillator s;
@@ -121,7 +123,7 @@ public class Player {
             }
         }
                         
-        private SineOscillator osc;
+        private final SineOscillator osc;
         
         private final UnitOscillator[] components;
         private final Harmonic[] harmonics;
@@ -145,6 +147,8 @@ public class Player {
             filter.output.connect(0, recorder.getInput(), isRight?1:0);
             filter.Q.set(1);
             filter.frequency.set(6000);
+            // --- general amplitude ---
+            filter.amplitude.set(amplitude * 0.4);
             
             microDelay.output.connect(0, filter.getInput(), 0);
                                     
@@ -202,18 +206,17 @@ public class Player {
         System.out.println(fileName);
         outputFile = new File(fileName.split("\\.")[0] + ".wav");
         frequency = 440;
+        this.amplitude = amplitude;
                 
         synth = JSyn.createSynthesizer();
         recorder = new WaveRecorder(synth, outputFile); 
         
      
         leftChannel = new Channel(synth, recorder, false);
-        rightChannel= new Channel(synth, recorder, true);
-               
-               
+        rightChannel= new Channel(synth, recorder, true);         
+        
         synth.start();
         recorder.start();
-        
     }
     
     public void SetFrequency(int frequency){
