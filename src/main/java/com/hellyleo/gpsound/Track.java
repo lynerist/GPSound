@@ -8,16 +8,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 class TrackPoint{
-
+    private final int x;
+    private final int y;
+    private final int z;
+    
     public TrackPoint(int x, int y, int z) {
         this.x = x; //delta long
         this.y = y; //delta lat
         this.z = z; //alt
     }
-
-    private final int x;
-    private final int y;
-    private final int z;
 
     public int getX() {
         return x;
@@ -42,28 +41,18 @@ public class Track implements Iterable<TrackPoint>, Iterator<TrackPoint>{
     private int currentIndex;
     private final String lat0;
     private final String long0;
-    private final String alt0;
+    
+    private int getAltitude(Node node){
+        while (node != null && !node.getNodeName().equals("ele")){
+            node = node.getNextSibling();
+        }
+        return node==null?-1:Float.valueOf(node.getTextContent()).intValue();
+    }
 
     public Track(Document doc) {
         track = doc.getElementsByTagName("trkpt");
-
-        Node node0 = track.item(0);
-
-        lat0    = ((Element)node0).getAttribute("lat");
-        long0   = ((Element)node0).getAttribute("lon");
-
-        //Get alt0 if "ele" node is there
-        Node alt0Node = node0.getFirstChild();
-        while (alt0Node != null && !alt0Node.getNodeName().equals("ele")){
-            alt0Node = alt0Node.getNextSibling();
-        }
-
-        if (alt0Node != null){
-            alt0 = alt0Node.getTextContent();
-        }else{
-            alt0 = "";
-        }
-
+        lat0    = ((Element)track.item(0)).getAttribute("lat");
+        long0   = ((Element)track.item(0)).getAttribute("lon");
         currentIndex = 0;
     }
 
@@ -82,21 +71,13 @@ public class Track implements Iterable<TrackPoint>, Iterator<TrackPoint>{
 
         int x = deltaLong(long0, ((Element)currentNode).getAttribute("lon"), lat0);
         int y = deltaLat(lat0, ((Element)currentNode).getAttribute("lat"));
-        int z = 440;
-
-        //To extract the elevation if it exists
-        if (! alt0.equals("")){
-            Node eleNode = currentNode.getFirstChild();
-            while (! eleNode.getNodeName().equals("ele")){
-                eleNode = eleNode.getNextSibling();
-            }
-            z = Float.valueOf(eleNode.getTextContent()).intValue();
-            z = z>8000?8000:(z<20?20:z);
-        }
+        int z = getAltitude(currentNode.getFirstChild());
+        z = z<0?440:(z>8000?8000:(z<20?20:z)); //default is 440 if ele doesn't exist.
+        
         return new TrackPoint(x,y,z);
     }
 
-    private int haversine(String la0, String lo0, String la1, String lo1){
+    private int haversineDistanceBetweenPoints(String la0, String lo0, String la1, String lo1){
         Double lat0 = Double.valueOf(la0);
         Double lon0 = Double.valueOf(lo0);
         Double lat1 = Double.valueOf(la1);
@@ -113,10 +94,10 @@ public class Track implements Iterable<TrackPoint>, Iterator<TrackPoint>{
     }
 
     private int deltaLat(String lat0, String lat1){
-        return haversine(lat0, "0", lat1, "0");
+        return haversineDistanceBetweenPoints(lat0, "0", lat1, "0");
     }
     private int deltaLong(String long0, String long1, String lat0){
-        return haversine(lat0, long0, lat0, long1);
+        return haversineDistanceBetweenPoints(lat0, long0, lat0, long1);
     }
 
     @Override

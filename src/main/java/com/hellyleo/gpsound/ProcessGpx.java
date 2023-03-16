@@ -23,7 +23,7 @@ public class ProcessGpx implements ActionListener{
             System.out.println("Manca il File");
         } else {
             try {
-                Player player = new Player(model.getGpx().getName(), model.getStartAmp());              
+                Player player = new Player(model.getGpx().getName(), model.getAmplitude());              
                 float counterTime = 0;
                 double timeQuantum = (double)model.getSongDuration()/(double)model.getNumPoints();
                 

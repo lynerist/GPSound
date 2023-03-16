@@ -14,13 +14,13 @@ public class Gpx {
     private String name = "";
     private Track track; 
 
-    private final static JFileChooser fc = new JFileChooser();
-    private final static DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    private static DocumentBuilder db;
+    private final static JFileChooser fileChooser = new JFileChooser();
+    private final static DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    private static DocumentBuilder documentBuilder;
         
     public Gpx(){
         // --- File chooser ---
-        fc.addChoosableFileFilter(new FileFilter(){
+        fileChooser.addChoosableFileFilter(new FileFilter(){
             @Override
             public boolean accept(File file){
                 return file.getName().endsWith(".gpx");
@@ -30,12 +30,12 @@ public class Gpx {
                 return ".gpx";
             }
         });
-        fc.setAcceptAllFileFilterUsed(false);
+        fileChooser.setAcceptAllFileFilterUsed(false);
         
         // --- File Parser ---
         try {
-            dbf.setIgnoringElementContentWhitespace(true);
-            db = dbf.newDocumentBuilder();
+            documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             System.err.println(e);
         }           
@@ -45,20 +45,20 @@ public class Gpx {
         return name;
     }
 
-    public void setName(String name){
+    private void setName(String name){
         this.name = name;
     }
     
     public boolean loadFile(Component view) throws SAXException, IOException{
-        int returnVal = fc.showDialog(view, "Load GPX");
+        int fileLoaded = fileChooser.showDialog(view, "Load GPX");
         
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
+        if (fileLoaded == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
             setName(file.getName());           
-            track = new Track(db.parse(file));           
+            track = new Track(documentBuilder.parse(file));           
         }
 
-        return returnVal == JFileChooser.APPROVE_OPTION;
+        return fileLoaded == JFileChooser.APPROVE_OPTION;
     }   
     
     public Track getTrack(){

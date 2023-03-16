@@ -7,21 +7,24 @@ import javax.swing.JProgressBar;
 public class Model{
     private final Gpx gpx;
     private double startStereo; //-0.5 - 0.5
-    private double startAmp; // 0.0 - 2.0
+    private double amplitude; // 0.0 - 2.0
     private int songDuration;
     private int sensibility;
     private final JProgressBar progressBar;
-    private final JComponent[] variInput;
+    private final JComponent[] inputParameters;
 
-    public Model(JProgressBar progress, JComponent[] ui) {
-        progressBar = progress;
-        variInput = ui;
-        progress.setStringPainted(true);
+    public Model(JProgressBar progressbar, JComponent[] inputComponents) {
+        // --- Progress visualization ---
+        progressBar = progressbar;
+        progressBar.setStringPainted(true);
+        inputParameters = inputComponents; //needed to disable components during computation
+        
+        // --- Variable Inizialization ---
         gpx = new Gpx();
         startStereo = 0;
-        startAmp = 1.0;
+        amplitude = 1.0;
         songDuration = 20;
-        sensibility = 1; // 0:Walk, 1:Hike, 2:Mountain Bike, 3:Racing Bike, 4:Vehicle  
+        sensibility = 1; // 0:Walk, 1:Hike, 2:Mountain Bike, 3:Bike, 4:Vehicle  
     }
     
     public Gpx getGpx(){
@@ -36,12 +39,12 @@ public class Model{
         return startStereo;
     }  
     
-    public void setStartAmp(double startAmp) {
-        this.startAmp = startAmp;
+    public void setAmplitude(double startAmp) {
+        this.amplitude = startAmp;
     }
     
-    public double getStartAmp() {
-        return startAmp;
+    public double getAmplitude() {
+        return amplitude;
     }    
 
     public void setSongDuration(int songDuration) {
@@ -69,10 +72,10 @@ public class Model{
     }
     
     public void disableInput(){
-         Arrays.stream(this.variInput).forEach((x)->x.setEnabled(false));
+         Arrays.stream(this.inputParameters).forEach((x)->x.setEnabled(false));
     }
     
     public void enableInput(){
-         Arrays.stream(this.variInput).forEach((x)->x.setEnabled(true));
+         Arrays.stream(this.inputParameters).forEach((x)->x.setEnabled(true));
     }
 }
