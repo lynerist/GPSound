@@ -372,7 +372,7 @@ public class GPSound extends javax.swing.JFrame {
     }//GEN-LAST:event_startStereoSliderStateChanged
 
     private void processActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processActionPerformed
-        ProcessorGpxToWav processGpx = new ProcessorGpxToWav(model);
+        DomainTranspositor processGpx = new DomainTranspositor(model);
         model.disableInput();
         process.setEnabled(false);
         Thread newThread = new Thread(() -> {

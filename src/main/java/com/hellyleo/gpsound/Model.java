@@ -72,10 +72,14 @@ public class Model{
     }
     
     public void disableInput(){
-         Arrays.stream(this.inputParameters).forEach((x)->x.setEnabled(false));
+        Arrays.stream(this.inputParameters).forEach((x)->x.setEnabled(false));
     }
     
     public void enableInput(){
-         Arrays.stream(this.inputParameters).forEach((x)->x.setEnabled(true));
+        Arrays.stream(this.inputParameters).forEach((x)->x.setEnabled(true));
+    }
+    
+    public boolean isFileLoaded(){
+        return !"".equals(getGpx().getName());
     }
 }
