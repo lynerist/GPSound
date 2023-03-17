@@ -27,6 +27,7 @@ public class Player {
 
     public Synthesizer synth;
   
+    // --- InterpolatingDelay has a bug, I have fixed it in this class ---
     private class MyInterpolatingDelay extends UnitFilter{
         public UnitInputPort delay;
         private float[] buffer;
@@ -37,13 +38,11 @@ public class Player {
             addPort(delay = new UnitInputPort("Delay"));
         }
 
-       
         public void allocate(int numFrames) {
             this.numFrames = numFrames;
             // Allocate extra frame for guard point to speed up interpolation.
             buffer = new float[numFrames + 1];
         }
-
 
         @Override
         public void generate(int start, int limit) {
@@ -54,7 +53,7 @@ public class Player {
             for (int i = start; i < limit; i++) {
                 // This should be at the beginning of the loop
                 // because the guard point should == buffer[0].
-                if (cursor >= numFrames) {
+                if (cursor >= numFrames) { //  ---------------------------> HERE THERE WAS THE BUG, IT WAS == rether then >=
                     // Write guard point! Must allocate one extra sample.
                     buffer[numFrames] = (float) inputs[i];
                     cursor = 0;
@@ -209,8 +208,7 @@ public class Player {
         this.amplitude = amplitude;
                 
         synth = JSyn.createSynthesizer();
-        recorder = new WaveRecorder(synth, outputFile); 
-        
+        recorder = new WaveRecorder(synth, outputFile);         
      
         leftChannel = new Channel(synth, recorder, false);
         rightChannel= new Channel(synth, recorder, true);         
