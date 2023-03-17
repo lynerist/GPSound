@@ -2,6 +2,8 @@
 
 Sonification of a GPX track
 
-Latitude is mapped in a pitch shift, longitude in stereophony and altitude in amplitude variation.
+The altitude decide the pitch (1000 m -> 1000 Hz) 
+Longitude and Latitude variations are mapped into perceived movement of the sound in the space
 
-Work in progress
+The timbre is built with additive synthesis
+
